@@ -105,9 +105,9 @@ export class QuotesService {
       },
     ];
 
-    const itemsPerPage:number = 10;
-    const end:number = page * itemsPerPage;
-    let start:number = 0;
+    const itemsPerPage = 10;
+    const end = page * itemsPerPage;
+    let start = 0;
     if(page > 1) {
       start = (page - 1) * itemsPerPage;
     }

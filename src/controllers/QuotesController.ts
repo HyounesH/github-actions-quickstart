@@ -9,8 +9,8 @@ export class QuotesController {
   public constructor(quotesService: QuotesService) {
     this.quotesService = quotesService;
   }
-  
-  public getQuotes(page: number = 1): Quote[] {
+
+  public getQuotes(page = 1): Quote[] {
     return this.quotesService.getQuotes(page);
   }
 }

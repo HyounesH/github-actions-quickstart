@@ -13,7 +13,7 @@
     "test:cov": "jest --coverage"
   },
   "keywords": ["Github actions", "typescript"],
-  "author": "",
+  "author": "HAMDANE Younes",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
