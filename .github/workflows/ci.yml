@@ -1,0 +1,51 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pullRequest-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the project
+      - name: Build the project
+        run: npm run build
+
+      # Run Linting
+      - name: Run Linting
+        run: npm run lint
+
+      # Run Tests with coverage
+      - name: Run Tests with coverage
+        run: npm run test:cov -- --coverageDirectory=./coverage
+
+      # List coverage directory contents
+      - name: List coverage directory contents
+        run: ls -la ./coverage
+
+      # Upload coverage report to Codecov
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true

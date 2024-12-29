@@ -34,30 +34,21 @@
     "eslint": "8.39.0"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "./",
-    "testMatch": [
-      "<rootDir>/test/**/*.(spec|test).ts?(x)"
-    ],
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "coverageReporters": [
-      "text",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "**/src/**/**/*.{ts,tsx,js,jsx}",
-      "!app.ts",
-      "!index.ts",
-      "!dist/**"     
-    ],
-    "coverageDirectory": "<rootDir>/test/.coverage",
-    "testEnvironment": "node",
-    "setupFiles": ["<rootDir>/test/setup.ts"]
-  }
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "./",
+  "testMatch": ["<rootDir>/test/**/*.(spec|test).ts?(x)"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "coverageReporters": ["text", "html", "lcov"],
+  "collectCoverageFrom": [
+    "**/src/**/**/*.{ts,tsx,js,jsx}",
+    "!app.ts",
+    "!index.ts",
+    "!dist/**"
+  ],
+  "coverageDirectory": "<rootDir>/.coverage",
+  "testEnvironment": "node",
+  "setupFiles": ["<rootDir>/test/setup.ts"]
+}
 }
