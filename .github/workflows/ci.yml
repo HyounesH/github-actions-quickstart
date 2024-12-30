@@ -65,8 +65,9 @@ jobs:
       - name: Get the commit hash
         id: commit
         run: | 
-          echo "COMMIT_HASH=$(git rev-parse --short ${{github.sha}})" >> $GITHUB_ENV
-          echo "::set-output name=COMMIT_HASH::${{COMMIT_HASH}}"
+          COMMIT_HASH=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_HASH=${COMMIT_HASH}" >> $GITHUB_ENV
+          echo "::set-output name=COMMIT_HASH::${COMMIT_HASH}"
       
       # Get version from package.json
       - name: Get version from package.json
