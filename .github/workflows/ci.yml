@@ -83,7 +83,10 @@ jobs:
           DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
           echo "Tagging docker image with tag: $DOCKER_TAG"
           docker build -t $DOCKER_TAG .
-      
+
+    outputs:
+      VERSION: ${{ steps.version.outputs.VERSION}}
+      COMMIT_HASH: ${{steps.commit.outputs.COMMIT_HASH}}  
     
   push-docker-image:
     runs-on: ubuntu-latest
