@@ -86,7 +86,7 @@ jobs:
       # Tag docker image
       - name: Tag docker image
         run: |
-          DOCKER_TAG=${{env.version}}-${{env.COMMIT_HASH}}
+          DOCKER_TAG=${{env.VERSION}}-${{env.COMMIT_HASH}}
           echo "Tagging docker image with tag: $DOCKER_TAG"
           docker tag ${{secrets.DOCKER_REPO}} $DOCKER_TAG
 
