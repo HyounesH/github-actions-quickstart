@@ -64,7 +64,9 @@ jobs:
       # Get the commit hash
       - name: Get the commit hash
         id: commit
-        run: echo "COMMIT_HASH=$(git rev-parse --short ${{github.sha}})" >> $GITHUB_ENV
+        run: | 
+          echo "COMMIT_HASH=$(git rev-parse --short ${{github.sha}})" >> $GITHUB_ENV
+          echo "::set-output name=COMMIT_HASH::${{COMMIT_HASH}}"
       
       # Get version from package.json
       - name: Get version from package.json
@@ -72,6 +74,7 @@ jobs:
         run: |
           VERSION=$(node -p -e  "require('./package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "::set-output name=VERSION::${VERSION}"
 
       # Build the docker image
       - name: Build the docker image
@@ -97,7 +100,7 @@ jobs:
       # Push docker image to docker hub
       -  name: Push docker image to docker hub
          run: |
-            DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
+            DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{needs.build-docker-image.outputs.VERSION}}-${{needs.build-docker-image.outputs.COMMIT_HASH}}
             echo "Pushing docker image with tag: $DOCKER_TAG"
             docker push $DOCKER_TAG
 
