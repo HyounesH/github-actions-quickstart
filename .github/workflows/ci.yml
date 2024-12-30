@@ -49,7 +49,7 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
   
-  build-docker-image:
+  build-push-docker-image:
     runs-on: ubuntu-latest
     needs: build-and-tests
 
@@ -80,9 +80,15 @@ jobs:
       # Build the docker image
       - name: Build the docker image
         run: |
-          DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
+          echo "build docker image with : ${{secrets.DOCKER_REPO}}"
+          docker build -t ${{secrets.DOCKER_REPO}} .
+      
+      # Tag docker image
+      - name: Tag docker image
+        run: |
+          DOCKER_TAG=${{env.version}}-${{env.COMMIT_HASH}}
           echo "Tagging docker image with tag: $DOCKER_TAG"
-          docker build -t $DOCKER_TAG .
+          docker tag ${{secrets.DOCKER_REPO}} $DOCKER_TAG
 
       # Set up docker hub
       - name: Sign in to Docker Hub
@@ -94,33 +100,13 @@ jobs:
       # Push docker image to docker hub
       -  name: Push docker image to docker hub
          run: |
-            DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
-            echo "Pushing docker image with tag: $DOCKER_TAG"
-            docker push $DOCKER_TAG
+            DOCKER_IMAGE_WITH_TAG=${{secrets.DOCKER_REPO}}:${{env.VERSION}}-${{env.COMMIT_HASH}}
+            echo "Pushing docker image with tag: $DOCKER_IMAGE_WITH_TAG"
+            docker push $DOCKER_IMAGE_WITH_TAG
 
-    # Set the ouputs
+    # Set the ouputs (to be used in the next job)
     outputs:
       VERSION: ${{ steps.version.outputs.VERSION}}
-      COMMIT_HASH: ${{steps.commit.outputs.COMMIT_HASH}}  
-    
-  push-docker-image:
-    runs-on: ubuntu-latest
-    needs: build-docker-image
-
-    steps:
-      
-      # Set up docker hub
-      - name: Sign in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME}}
-          password: ${{ secrets.DOCKER_PASSWORD}}
-      
-      # Push docker image to docker hub
-      -  name: Push docker image to docker hub
-         run: |
-            DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{needs.build-docker-image.outputs.VERSION}}-${{needs.build-docker-image.outputs.COMMIT_HASH}}
-            echo "Pushing docker image with tag: $DOCKER_TAG"
-            docker push $DOCKER_TAG
+      COMMIT_HASH: ${{steps.commit.outputs.COMMIT_HASH}}
 
 
