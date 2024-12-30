@@ -83,7 +83,7 @@ jobs:
       # Build the docker image
       - name: Build the docker image
         run: |
-          DOCKER_TAG=${{secrets.DOCKER_REPO}}::${{env.VERSION}}-${{env.COMMIT_HASH}}
+          DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
           echo "Tagging docker image with tag: $DOCKER_TAG"
           docker build -t $DOCKER_TAG .
       
@@ -104,7 +104,7 @@ jobs:
       # Push docker image to docker hub
       -  name: Push docker image to docker hub
          run: |
-            DOCKER_TAG=${{secrets.DOCKER_REPO}}::${{env.VERSION}}-${{env.COMMIT_HASH}}
+            DOCKER_TAG=${{secrets.DOCKER_REPO}}-${{env.VERSION}}-${{env.COMMIT_HASH}}
             echo "Pushing docker image with tag: $DOCKER_TAG"
             docker push $DOCKER_TAG
 
